@@ -31,11 +31,14 @@ new file:   index.php
 </head>
 <body>
 <form action="" method="post">
-    <input  type="text" id="copyFromClass" value="D:\app\apache-tomcat-7.0.72\webapps\wz\WEB-INF\classes\">
+<!--    <input  type="text" id="copyFromClass" value="D:\app\apache-tomcat-7.0.72\webapps\wz\WEB-INF\classes\">-->
+<!--    <hr>-->
+<!--    <input  type="text" id="copyFromJsp" value="D:\app\apache-tomcat-7.0.72\webapps\wz\">-->
+<!--    <hr>-->
+    <input  type="text" id="copyFromClass" value="D:\app\apache-tomcat\webapps\pmis\WEB-INF\classes\">
     <hr>
-    <input  type="text" id="copyFromJsp" value="D:\app\apache-tomcat-7.0.72\webapps\wz\">
+    <input  type="text" id="copyFromJsp" value="D:\app\apache-tomcat\webapps\pmis\">
     <hr>
-
 
     <textarea id="filePath"  cols="30" rows="10"> </textarea>
     <hr>
