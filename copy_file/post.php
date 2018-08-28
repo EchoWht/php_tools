@@ -5,21 +5,32 @@
  * Date: 2018/8/15
  * Time: 下午10:35
  */
-//echo copy("../test/a.txt",date("YmdH")."/b.txt");//拷贝
-//
-//echo date("YmdH");
-//mkdir("./a/".date("YmdH"),0777,true);//创建以当前日期命名的文件夹
-//exit();
 require_once ("../utils/StringUtils.php");
+//返回消息
+$returnMsg=array(
+    "success"=>true,
+    "msg"=>"拷贝成功",
+    "copy"=>array()
+);
 
 $filePaths=$_REQUEST['filePaths'];//需要拷贝文件的部分路径
-$copyFrom=$_REQUEST['copyFrom'];//需要拷贝文件的主目录
+$copyFromClass=$_REQUEST['copyFromClass'];//需要拷贝文件的主目录
+$copyFromJsp=$_REQUEST['copyFromJsp'];//需要拷贝文件的主目录
+$copyFrom=$copyFromJsp;//需要拷贝文件的主目录
+
+
 $stringUtils=new StringUtils();
 for ($i=0;$i<count($filePaths);$i++){
     if ($filePaths[$i]){
         $filePaths[$i]= $stringUtils->subStrBackward($filePaths[$i],':');//去掉冒号之前的内容
-        //如果是.java则替换成.class
-        $filePaths[$i]=str_replace(".java",".class",$filePaths[$i]);
+
+        $filePaths[$i]= str_replace("01source/wz/src/","",$filePaths[$i]);//去掉01source/wz/src/
+        $filePaths[$i]= str_replace("01source/wz/WebRoot/","",$filePaths[$i]);//去掉 01source/wz/WebRoot
+
+        $filePaths[$i]= str_replace("src/","",$filePaths[$i]);//去掉src/
+        $filePaths[$i]= str_replace("WebRoot/","",$filePaths[$i]);//去掉 WebRoot/
+
+        $filePaths[$i]=str_replace(".java",".class",$filePaths[$i]);//如果是.java则替换成.class
     }else{
        unset($filePaths[$i]);//删除空的
     }
@@ -31,6 +42,9 @@ if (count($filePaths)>0&&!file_exists($dirName)){
 }
 foreach ($filePaths as $filePath){
 //    /var_dump($dirName."/".$filePath);
+    if (stristr($filePath,".class")){
+        $copyFrom=$copyFromClass;
+    }
     $from =$copyFrom.$filePath;
     $to=$dirName."/".$filePath;
     $to_dir=$stringUtils->subStrForward($to,'/');
@@ -38,8 +52,13 @@ foreach ($filePaths as $filePath){
        //判断下是否创建文件夹了
        mkdir($to_dir,0777,true);
    };
-    copy($from,$to);
+    $result=copy($from,$to);
+    if (!$result){
+        $returnMsg["success"]=false;
+        array_push($returnMsg["copy"],array($from,$to));
+    }
 }
+echo json_encode($returnMsg);
 
 
 

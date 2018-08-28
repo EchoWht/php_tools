@@ -6,11 +6,12 @@ $(document).ready(function() {
             type: "POST",
             data: {
                 "filePaths": filePaths,
-                "copyFrom":$("#copyFrom").val()
+                "copyFromClass":$("#copyFromClass").val(),
+                "copyFromJsp":$("#copyFromJsp").val()
             },
             success: function (data) {
                 //debugger;
-
+                $("#jsonData").html(data);
             }
         });
     })
